@@ -163,3 +163,6 @@ Enter email, and agree. Then insert the domain name.
 
 - https://youtube.com/watch?v=8Uofkq718n8
 - https://youtu.be/8Uofkq718n8?si=a1q6r6kWzmxy8437&t=865
+- https://maheshwaghmare.com/wordpress/how-to/fix-perform-requested-action/#google_vignette
+- https://wpastra.com/docs/xmlreader-support-missing-starter-templates-for-the-administrators/
+- https://wpastra.com/docs/curl-support-missing-for-the-administrators/
