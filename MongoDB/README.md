@@ -2,7 +2,7 @@
 
 > [Ref: MongoDB University – Node.js Developer Path](https://learn.mongodb.com/learn/learning-path/mongodb-nodejs-developer-path)
 > 
-> [PDF: Exam Study Guide](./Associate%20Developer%20Exam%20Study%20Guide.pdf)
+> [PDF: Exam Study Guide](./assets/0-Associate-Developer-Exam-Study-Guide.pdf)
 
 ## Intro to MongoDB
 - MongoDB is a general-purpose document database suitable for a wide range of use cases
@@ -15,3 +15,5 @@
 - [MongoDB Document Model](./1-Document-Model.md)
 - [Connecting to a MongoDB Database](./2-Connecting-to-MongoDB.md)
 - [CRUD Operations](./3-CRUD-Operations.md)
+- [Aggregation](./4-Aggregation.md)
+- [Indexes](./5-Indexes.md)
