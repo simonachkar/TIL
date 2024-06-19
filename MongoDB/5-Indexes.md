@@ -110,5 +110,5 @@
   db.customers.dropIndex({ active: 1, birthdate: -1, name: 1 })
   ```
 
-### Extra Resources
+## MongoDB Docs
 - [Indexes Docs](https://www.mongodb.com/docs/manual/indexes/)

@@ -23,6 +23,11 @@ db.collection.aggregate([
   {
     $match: { "field_name": "value" }
   }
+
+  // Example
+  {
+    $match: { size: "small" }
+  }
   ```
 
 ### `$group`
@@ -53,6 +58,9 @@ Groups documents by a group key
     { $group: { _id: "$city" } }
   ])
   ```
+
+- Another example:
+<img style="margin-top:20px" src="./assets/3-aggregation-match-group.png" alt="Aggregation Example with $match and $group" />
 
 ## `$sort` & `$limit` Stages
 
@@ -146,9 +154,11 @@ Creates a new document with the count of documents at that stage
     { $out: "new_collection_name" }
   ])
   ```
+- Example with output:
+<img style="margin-top:20px" src="./assets/4-aggregation-out.png" alt="Aggregation Example with $out" />
 
 ## MongoDB Docs
-- [Aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/?_ga=2.79556883.687698074.1718708613-1387794012.1718708613)
+- [Aggregation Operations](https://www.mongodb.com/docs/manual/aggregation)
 
 
 

@@ -40,3 +40,5 @@ These allow applications to connect to the database using various programming la
 
 <img style="margin-top:20px" src="./assets/2-node-app-using-mongo.png" alt="Example of a Node.js app using MongoDB" />
 
+## MongoDB Docs
+- [Install MongoDB](https://www.mongodb.com/docs/manual/installation)

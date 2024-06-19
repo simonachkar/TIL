@@ -196,3 +196,6 @@ Rememebr: "*Data that is accessed together should be stored together*", modeling
 - **Atlas Tools**:
   - Data Explorer (available in the free tier)
   - Performance Advisor (available in the M10 tier and up)
+
+## MongoDB Docs
+- [Data Modeling](https://www.mongodb.com/docs/manual/data-modeling)
