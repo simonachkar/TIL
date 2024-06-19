@@ -1,32 +1,32 @@
 
-## Aggregation
-
-- **Aggregation**: A way to filter, sort, group, reshape, and analyze data
+# Aggregation
+- A way to filter, sort, group, reshape, and analyze data
 - **Aggregation**: Collection and summary of data
 - **Stage**: A built-in method that can be performed on the data without permanently altering it (e.g., `$match`, `$group`, `$sort`, `$limit`, `$project`, `$set`, `$count`, `$out`)
 - **Order of Stages**: Specifies the sequence of operations the data will go through
 - **Aggregation Pipeline**: A series of stages performed on the data in order
-- **Field References**: Use `$` to reference fields within the pipeline
-  - Example: `"$fieldName"`
+- **Field References**: Use `$` to reference fields within the pipeline (`"$fieldName"`, `"$first_name"`)
 
-**Structure of an Aggregation Pipeline**:
+## Structure of an Aggregation Pipeline
 ```js
 db.collection.aggregate([
-    { $stage1: { expression1, expression2 } },
-    { $stage2: { expression1 } }
+  { $stage1: { expression1, expression2 } },
+  { $stage2: { expression1 } },
 ])
 ```
 
-### `$match` & `$group` Stages
+## `$match` & `$group` Stages
 
-- **`$match`**: Filters documents that match specified conditions. It works like a find command
+### `$match`
+**Filters** documents that match specified conditions. It works like a find command
   ```js
   {
     $match: { "field_name": "value" }
   }
   ```
 
-- **`$group`**: Groups documents by a group key
+### `$group`
+Groups documents by a group key
   ```js
   {
     $group: {
@@ -36,9 +36,9 @@ db.collection.aggregate([
   }
   ```
 
-#### `$match` and `$group` in an Aggregation Pipeline
+### `$match` and `$group` in an Aggregation Pipeline (Examples)
 
-- Example: Find documents with the field "state" matching "CA" and group them by the city, showing the total number of zip codes in California:
+- Find documents with the field "state" matching "CA" and group them by the city, showing the total number of zip codes in California:
   ```js
   db.zips.aggregate([
     { $match: { state: "CA" } },
@@ -46,7 +46,7 @@ db.collection.aggregate([
   ])
   ```
 
-- Example: One document for each city in Texas (TX):
+- One document for each city in Texas (TX):
   ```js
   db.zips.aggregate([
     { $match: { state: "TX" } },
@@ -54,25 +54,27 @@ db.collection.aggregate([
   ])
   ```
 
-### `$sort` & `$limit` Stages
+## `$sort` & `$limit` Stages
 
-- **`$sort`**: Sorts all input documents and returns them in sorted order. Use `1` for ascending order and `-1` for descending order
+### `$sort`
+Sorts all input documents and returns them in sorted order. Use `1` for ascending order and `-1` for descending order
   ```js
   {
     $sort: { "field_name": 1 }
   }
   ```
 
-- **`$limit`**: Limits the number of documents returned
+### `$limit`
+Limits the number of documents returned
   ```js
   {
     $limit: 5
   }
   ```
 
-#### `$sort` and `$limit` in an Aggregation Pipeline
+### `$sort` and `$limit` in an Aggregation Pipeline (Examples)
 
-- Example: Sort documents by `pop` in descending order and limit the output to the first five documents:
+- Sort documents by `pop` in descending order and limit the output to the first five documents:
   ```js
   db.zips.aggregate([
     { $sort: { pop: -1 } },
@@ -80,7 +82,7 @@ db.collection.aggregate([
   ])
   ```
 
-- Example: One document for the population of each zip code, sorted in descending order:
+- One document for the population of each zip code, sorted in descending order:
   ```js
   db.zips.aggregate([
     { $group: { _id: "$pop" } },
@@ -88,7 +90,7 @@ db.collection.aggregate([
   ])
   ```
 
-- Example: 10 documents, each containing the population of a zip code as the `_id`, sorted by population in descending order:
+- 10 documents, each containing the population of a zip code as the `_id`, sorted by population in descending order:
   ```js
   db.zips.aggregate([
     { $group: { _id: "$pop" } },
@@ -97,9 +99,10 @@ db.collection.aggregate([
   ])
   ```
 
-### `$project`, `$count` & `$set` Stages
+## `$project`, `$count` & `$set` Stages
 
-- **`$project`**: Specifies the fields to include or exclude in the output documents
+### `$project`
+Specifies the fields to include or exclude in the output documents
   ```js
   {
     $project: {
@@ -111,7 +114,8 @@ db.collection.aggregate([
   }
   ```
 
-- **`$set`**: Creates new fields or modifies existing fields
+### `$set`
+Creates new fields or modifies existing fields
   ```js
   {
     $set: {
@@ -121,21 +125,21 @@ db.collection.aggregate([
   }
   ```
 
-- **`$count`**: Creates a new document with the count of documents at that stage
+### `$count`
+Creates a new document with the count of documents at that stage
   ```js
   {
     $count: "total_zips"
   }
   ```
 
-**Difference between `$set` and `$project`**:
+### Difference between `$set` and `$project`
 - `$set` is used to create or change values of new or existing fields
 - `$project` can be used to create or change the value of fields, but it can also be used to specify which fields to show in the documents in the aggregation pipeline
 
-### `$out` Stage
-
-- **`$out`**: Creates a new collection from the output of an aggregation pipeline. It must be the last stage in the pipeline
-  - If the collection does not exist, it will be created. If it exists, the data will be overwritten
+## `$out` Stage
+- Creates a new collection from the output of an aggregation pipeline. It must be the last stage in the pipeline
+- If the collection does not exist, it will be created. If it exists, the data will be overwritten
   ```js
   db.collection.aggregate([
     // other stages
@@ -143,9 +147,9 @@ db.collection.aggregate([
   ])
   ```
 
-### Extra Resources
-- [MongoDB Docs: Aggregation Operations](https://learn.mongodb.com/learn/course/mongodb-aggregation/conclusion/learn?client=customer&page=2#:~:text=MongoDB%20Docs%3A%20Aggregation%20Operations)
-- [MongoDB Docs: Aggregation Pipelines](https://learn.mongodb.com/learn/course/mongodb-aggregation/conclusion/learn?client=customer&page=2#:~:text=MongoDB%20Docs%3A%20Aggregation%20Pipelines)
+## MongoDB Docs
+- [Aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/?_ga=2.79556883.687698074.1718708613-1387794012.1718708613)
+
 
 
 
