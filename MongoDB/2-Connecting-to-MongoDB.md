@@ -1,9 +1,6 @@
 # Connecting to a MongoDB Database
-
 - **Use MongoDB Connection String**: The connection string allows you to connect to MongoDB from Shell, Compass, or any other application
-
 - **Standard Format**: `mongodb://username:password@host:port/database`
-
 - **DNS Seed List Format**: Provides a DNS server list to our connection string, simplifying the configuration for connecting to a MongoDB cluster
 
 **Example Connection String**:
@@ -38,11 +35,8 @@ These allow applications to connect to the database using various programming la
 
 
 ## MongoDB in Node.js
-
 - An application should use a single `MongoClient` instance for all database requests
-
 - Because creating `MongoClient` instances is resource-intensive and creating a new `MongoClient` for each request will affect performance negatively
-
 
 <img style="margin-top:20px" src="./assets/2-node-app-using-mongo.png" alt="Example of a Node.js app using MongoDB" />
 
