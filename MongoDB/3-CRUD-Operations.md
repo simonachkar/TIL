@@ -187,117 +187,105 @@ Updates multiple documents. Accepts: filter, update, and options
 - **Cursor**: A pointer to the result set of a query. It allows you to iterate over query results one at a time.
 - **Cursor Operators**: Methods that modify the behavior of the cursor, such as sorting, limiting, and projecting results
 
-### Sorting Results
-- **`cursor.sort()`**: Sorts the documents in the result set
-  - **Syntax**: `db.collection.find(<query>).sort(<sort>)`
-  - **Examples**:
-    ```js
-    // Return data on all music companies, sorted alphabetically from A to Z
-    db.companies.find({ category_code: "music" }).sort({ name: 1 })
+### Sorting Results `sort()`
+**`cursor.sort()`** sorts the documents in the result set
+```js
+// Syntax:
+// db.collection.find(<query>).sort(<sort>)
 
-    // Return data on all music companies, sorted alphabetically from Z to A
-    db.companies.find({ category_code: "music" }).sort({ name: -1 })
-    ```
-  - **Explanation**:
-    - `1`: Ascending order (smallest to largest, A-Z).
-    - `-1`: Descending order (largest to smallest, Z-A).
+// Return data on all music companies, sorted alphabetically from A to Z
+db.companies.find({ category_code: "music" }).sort({ name: 1 })
 
-### Limiting Results
-- **`cursor.limit()`**: Limits the number of documents returned in the result set
-  - **Syntax**: `db.collection.find(<query>).limit(<number>)`
-  - **Example**:
-    ```js
-    // Return the three music companies with the highest number of employees
-    db.companies
-      .find({ category_code: "music" })
-      .sort({ number_of_employees: -1, _id: 1 })
-      .limit(3)
-    ```
+// Return data on all music companies, sorted alphabetically from Z to A
+db.companies.find({ category_code: "music" }).sort({ name: -1 })
+```
+`1`: ascending order (smallest to largest, A-Z), `-1`: descending order (largest to smallest, Z-A).
+
+### Limiting Results `limit()`
+**`cursor.limit()`**: Limits the number of documents returned in the result set
+```js
+// Syntax:
+// db.collection.find(<query>).limit(<number>)
+
+// Return the three music companies with the highest number of employees
+db.companies
+  .find({ category_code: "music" })
+  .sort({ number_of_employees: -1, _id: 1 })
+  .limit(3)
+```
 
 ### Returning Specific Data from a Query
 - **Projection**: Specifies the fields to return in the query results
-  - **Syntax**: `db.collection.find(<query>, <projection>)`
-  - **Examples**:
-    - **Include a Field** (`1` to include):
-      ```js
-      // Return all restaurant inspections - business name, result, and _id fields only.
-      db.inspections.find(
-        { sector: "Restaurant - 818" },
-        { business_name: 1, result: 1 }
-      )
-      ```
-    - **Exclude a Field** (`0` to exclude):
-      ```js
-      // Return all inspections with result of "Pass" or "Warning" - exclude date and zip code.
-      db.inspections.find(
-        { result: { $in: ["Pass", "Warning"] } },
-        { date: 0, "address.zip": 0 }
-      )
-      // Return all restaurant inspections - business name and result fields only, exclude _id
-      db.inspections.find(
-        { sector: "Restaurant - 818" },
-        { business_name: 1, result: 1, _id: 0 }
-      )
-      ```
+- **Include a Field** (`1` to include)
+- **Exclude a Field** (`0` to exclude)
+- **Note**: You can either include or exclude fields in the results, but not both. However, the `_id` field is an exception; it can be suppressed by setting its value to `0` in any projection
+```js
+// Syntax:
+// db.collection.find(<query>, <projection>)
 
-  - **Note**: You can either include or exclude fields in the results, but not both. However, the `_id` field is an exception; it can be suppressed by setting its value to `0` in any projection
+// Return all restaurant inspections - business name, result, and _id fields only.
+db.inspections.find(
+  { sector: "Restaurant - 818" },
+  { business_name: 1, result: 1 }
+)
 
-### Counting Documents
-- **`countDocuments()`**: Counts the number of documents in the collection that match the query
-  - **Syntax**: `db.collection.countDocuments(<query>, <options>)`
-  - **Examples**:
-    ```js
-    // Count the number of documents in the trip collection.
-    db.trips.countDocuments({})
+// Return all inspections with result of "Pass" or "Warning" - exclude date and zip code.
+db.inspections.find(
+  { result: { $in: ["Pass", "Warning"] } },
+  { date: 0, "address.zip": 0 }
+)
 
-    // Count the number of trips over 120 minutes by subscribers.
-    db.trips.countDocuments({
-      tripduration: { $gt: 120 },
-      usertype: "Subscriber",
-    })
-    ```
+// Return all restaurant inspections - business name and result fields only, exclude _id
+db.inspections.find(
+  { sector: "Restaurant - 818" },
+  { business_name: 1, result: 1, _id: 0 }
+)
+```
 
-- **General Count**:
-  ```js
-  // Count all documents in the inspections collection
-  db.inspections.countDocuments({})
-  ```
+### Counting Documents `countDocuments()
+Counts the number of documents in the collection that match the query
+```js
+// Syntax:
+// db.collection.countDocuments(<query>, <options>)
+
+// Count the number of documents in the trip collection.
+db.trips.countDocuments({})
+
+// Count the number of trips over 120 minutes by subscribers.
+db.trips.countDocuments({
+  tripduration: { $gt: 120 },
+  usertype: "Subscriber",
+})
+```
 
 ## CRUD Operations in Node.js
 
 ### Creating Transactions in Node.js Application
-
-- **What are Transactions?**: Transactions are a sequence of operations performed as a single logical unit of work. They ensure that either all operations within the transaction are executed successfully, or none of them are.
-
-- **Multidocument Transactions**: Allow multiple documents across one or more collections to be included in a single transaction, ensuring atomicity.
-
-- **Atomicity**: Ensures that all operations within a transaction are completed successfully; if any operation fails, the transaction is aborted, and all changes are rolled back.
-
+- **What are Transactions?**: Transactions are a sequence of operations performed as a single logical unit of work. They ensure that either all operations within the transaction are executed successfully, or none of them are
+- **Multidocument Transactions**: Allow multiple documents across one or more collections to be included in a single transaction, ensuring atomicity
+- **Atomicity**: Ensures that all operations within a transaction are completed successfully; if any operation fails, the transaction is aborted, and all changes are rolled back
 - **Steps to Create a Transaction**:
-
   1. Start a client session.
   2. Define the transaction options (optional).
   3. Define the sequence of operations.
   4. Release the resources used by the transaction.
-
-- By default, multidocument transactions have a time limit of 60 seconds.
-- Pass a session as an option to the operations involved in the transaction.
-- Transactions ensure that all operations happen together or not at all.
+- By default, multidocument transactions have a time limit of 60 seconds
+- Pass a session as an option to the operations involved in the transaction
+- Transactions ensure that all operations happen together or not at all
 
 ### Code Example
-
 ```js
-require("dotenv").config()
-const { MongoClient } = require("mongodb")
+require("dotenv").config();
+const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, { useUnifiedTopology: true })
+const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 async function runTransaction() {
   try {
     // Collections
-    const accounts = client.db("bank").collection("accounts")
-    const transfers = client.db("bank").collection("transfers")
+    const accounts = client.db("bank").collection("accounts");
+    const transfers = client.db("bank").collection("transfers");
 
     // Account information
     const account_id_sender = "MDB574189300";
@@ -305,7 +293,7 @@ async function runTransaction() {
     const transaction_amount = 100;
 
     // Start a session
-    const session = client.startSession()
+    const session = client.startSession();
 
     // Begin a transaction on the session.
     const transactionResults = await session.withTransaction(async () => {
@@ -314,14 +302,14 @@ async function runTransaction() {
         { account_id: account_id_sender },
         { $inc: { balance: -transaction_amount } },
         { session }
-      )
+      );
 
       // Update the balance field of the receiver’s account by incrementing the transaction_amount to the balance field.
       const receiverUpdate = await accounts.updateOne(
         { account_id: account_id_receiver },
         { $inc: { balance: transaction_amount } },
         { session }
-      )
+      );
 
       // Create a transfer document and insert it into the transfers collection.
       const transfer = {
@@ -333,39 +321,39 @@ async function runTransaction() {
 
       const insertTransferResults = await transfers.insertOne(transfer, {
         session,
-      })
+      });
 
       // Update the transfers_complete array of the sender’s account by adding the transfer_id to the array.
       const updateSenderTransferResults = await accounts.updateOne(
         { account_id: account_id_sender },
         { $push: { transfers_complete: transfer.transfer_id } },
         { session }
-      )
+      );
 
       // Update the transfers_complete array of the receiver’s account by adding the transfer_id to the array.
       const updateReceiverTransferResults = await accounts.updateOne(
         { account_id: account_id_receiver },
         { $push: { transfers_complete: transfer.transfer_id } },
         { session }
-      )
-    })
+      );
+    });
 
     // Log a message regarding the success or failure of the transaction.
     if (transactionResults) {
-      console.log("Transaction completed successfully.")
+      console.log("Transaction completed successfully.");
     } else {
-      console.log("Transaction failed.")
+      console.log("Transaction failed.");
     }
   } catch (err) {
-    console.error(`Transaction aborted: ${err}`)
-    process.exit(1)
+    console.error(`Transaction aborted: ${err}`);
+    process.exit(1);
   } finally {
     // End the session and close the client.
-    await session.endSession()
-    await client.close()
+    await session.endSession();
+    await client.close();
   }
 }
 
 // Run the transaction function
-client.connect().then(runTransaction).catch(console.error)
+client.connect().then(runTransaction).catch(console.error);
 ```
